@@ -36,7 +36,17 @@ class Application:
             ],
         )
         self.page.appbar = self.bar
-        # -------------------------------------------------------------------------
+        
+        # MODAL REGRAS -------------------------------------------------------------------------
+        self.rules_modal = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Regras do Jogo"),
+            content=ft.Text("Descubra a palavra secreta, usando até 03 dicas!"),
+            actions=[
+                ft.TextButton("Continuar", on_click=lambda e: self.page.close(self.rules_modal)),
+            ],
+        )
+        # --------------------------------------------------------------------------------------
 
         self.page.add(
             self.build(),
@@ -155,7 +165,7 @@ class Application:
                                 Buttons_Main(text="Continuar"),
                                 Buttons_Main(text="Novo Jogo", on_click=self.new_game),
                                 Buttons_Main(text="Duelo"),
-                                Buttons_Main(text="Regras"),
+                                Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
                             ]
                         ),
                     ),
