@@ -1,7 +1,8 @@
 import flet as ft
+from time import sleep
 
 
-class MyContainer(ft.Container):
+class ContainerTip(ft.Container):
     def __init__(self, tip_score, tip_text, margin=0):
         super().__init__()
         self.margin = ft.margin.only(left=margin)
@@ -25,6 +26,7 @@ class MyContainer(ft.Container):
                 ft.Text(value=tip_text, color="black", weight="bold"),
             ],
         )
+        self.visible = False
 
 
 class UI_GameSolo2(ft.Column):
@@ -36,6 +38,11 @@ class UI_GameSolo2(ft.Column):
         self.alignment = ft.MainAxisAlignment.END
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         
+        self.containerTip1 = ContainerTip(tip_score="10", tip_text="DICA 1", margin=-80)
+        self.containerTip1.visible = True
+        self.containerTip2 = ContainerTip(tip_score="8", tip_text="DICA 2")
+        self.containerTip3 = ContainerTip(tip_score="6", tip_text="DICA 3", margin=80)
+
         self.controls=[
             ft.Container(
                 width=350,
@@ -64,9 +71,33 @@ class UI_GameSolo2(ft.Column):
                             content=ft.Text("A dica é:")
                         ),
                         
-                        MyContainer(tip_score="10", tip_text="DICA 1", margin=-80),
-                        MyContainer(tip_score="8", tip_text="DICA 2"),
-                        MyContainer(tip_score="6", tip_text="DICA 3", margin=80),
+                        self.containerTip1,
+                        self.containerTip2,
+                        self.containerTip3,
+                        
+                        ft.Container(
+                            margin=ft.margin.only(top=30),
+                            alignment=ft.alignment.center,
+                            content=ft.TextField(
+                                width=220,
+                                border_color="transparent",
+                                expand=True,
+                                hint_text="Qual é a palavra?",
+                                hint_style=ft.TextStyle(color="#272B30"),
+                                color="black",
+                                bgcolor="#B9BABB",
+                            ),
+                        ),
+                        
+                        ft.Row(
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            controls=[
+                                ft.ElevatedButton(text="Responder",
+                                                  width=135, on_click=self.button_responder),
+                                ft.ElevatedButton(text="Próxima dica",
+                                                  width=135, on_click=self.button_nextTip),
+                            ],
+                        ),
                     ],
                 ),
             ),
@@ -86,3 +117,25 @@ class UI_GameSolo2(ft.Column):
                                  ),
             ),
         ]
+    
+    def button_responder(self, e):
+        self.win_modal = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("PARABÉNS, ACERTOU!"),
+            content=ft.Text("PALAVRA_X \nGanhou Y Pontos"),
+            actions=[
+                ft.TextButton("Menu", on_click=lambda e: self.page.close(self.win_modal)),
+                ft.TextButton("Próxima Palavra", on_click=self.button_nextWord),
+            ],
+        )
+        self.page.open(self.win_modal)
+    
+    def button_nextTip(self, e):
+        if self.containerTip2.visible:
+            self.containerTip3.visible = True
+        self.containerTip2.visible = True
+        
+        self.page.update()
+    
+    def button_nextWord(self, e):
+        self.page.close(self.win_modal)
