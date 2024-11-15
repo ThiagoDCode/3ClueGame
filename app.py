@@ -1,4 +1,6 @@
 import flet as ft
+from back_end import Game_Solo
+from back_end import words
 
 
 class Buttons_Main(ft.ElevatedButton):
@@ -56,10 +58,30 @@ class Application:
         self.page.clean()
         self.page.add(self.build())
     
+    def continued(self, e):
+        from game_ui import GameUI_Solo
+        
+        if not words:
+            print("sem palavras")
+            endGame_modal = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("Fim de Jogo"),
+                content=ft.Text("Palavras zeradas"),
+                actions=[
+                    ft.TextButton("Novo Jogo", on_click=lambda e: self.page.close(endGame_modal)),
+                    ft.TextButton("Continuar", on_click=lambda e: self.page.close(endGame_modal))
+                ]
+            )
+            self.page.open(endGame_modal)
+        else:
+            self.page.clean()
+            self.page.add(GameUI_Solo(self.page))
+    
     def new_game(self,e):
-        from game import Game_Solo
+        from game_ui import GameUI_Solo
+        
         self.page.clean()
-        self.page.add(Game_Solo(self.page))
+        self.page.add(GameUI_Solo(self.page))
     
     # BUILD HOME -----------------------------------------------------------------------------------------
     def build(self):
@@ -162,7 +184,7 @@ class Application:
                         margin=ft.margin.only(top=40),
                         content=ft.Column(
                             controls=[
-                                Buttons_Main(text="Continuar"),
+                                Buttons_Main(text="Continuar", on_click=self.continued),
                                 Buttons_Main(text="Novo Jogo", on_click=self.new_game),
                                 Buttons_Main(text="Duelo"),
                                 Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
