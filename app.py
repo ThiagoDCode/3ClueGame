@@ -1,4 +1,11 @@
 import flet as ft
+import os
+import sys
+import json
+
+
+with open("user_data.json", mode="r", encoding="UTF-8") as file:
+    user_data = json.load(file)
 
 
 class Buttons_Main(ft.ElevatedButton):
@@ -22,13 +29,13 @@ class Application:
 
         # HEADER BAR --------------------------------------------------------------
         self.bar = ft.AppBar(
-            leading=ft.IconButton(ft.icons.HOME, tooltip="Tela Inicial", on_click=self.home),
+            leading=ft.IconButton(ft.icons.HOME, tooltip="Tela Inicial", on_click=self.restart_app),
             bgcolor=ft.colors.SURFACE_VARIANT,
             toolbar_height=35,
             actions=[
-                ft.PopupMenuButton(tooltip="Preferências",
+                ft.PopupMenuButton(tooltip="Configurações",
                     items=[
-                        ft.PopupMenuItem(text="ITEM 1"),
+                        ft.PopupMenuItem(text="Preferências", on_click=self.configs_app),
                         ft.PopupMenuItem(),
                         ft.PopupMenuItem(text="ITEM 2"),
                     ],
@@ -52,9 +59,25 @@ class Application:
             self.build(),
         )
     
-    def home(self, e):
+    # def home(self):
+    #     self.restart_app()
+    #     self.page.clean()
+    #     self.page.add(self.build())
+    
+    def configs_app(self, e):
+        from configs_app import ConfigAppUI
         self.page.clean()
-        self.page.add(self.build())
+        self.page.add(ConfigAppUI(self.page))
+    
+    def edit_user(self, e):
+        from UI_editUser import EditUser
+        
+        self.page.clean()
+        self.page.add(EditUser(self.page))
+    
+    def restart_app(self, e):
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
     
     # def continued(self, e):
     #     from game_ui import GameUI_Solo
@@ -101,9 +124,11 @@ class Application:
                                          fit=ft.ImageFit.COVER,
                                          width=150,
                                         ),
+                        on_click=self.edit_user,
+                        tooltip="Editar Perfil"
                     ),
 
-                    ft.Text("#Dallas", weight="bold"),
+                    ft.Text(user_data["user"], weight="bold"),
 
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,

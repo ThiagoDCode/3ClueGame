@@ -38,10 +38,17 @@ class UI_GameSolo2(ft.Column):
         self.alignment = ft.MainAxisAlignment.END
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         
+        # OU COLOCAR DIRETAMENTE NA LINA DOS CONTAINERS
+        self.tip1 = "DICA 1"
+        self.tip2 = "DICA 2"
+        self.tip3 = "DICA 3"
+        
         self.containerTip1 = ContainerTip(tip_score="10", tip_text="DICA 1", margin=-80)
         self.containerTip1.visible = True
         self.containerTip2 = ContainerTip(tip_score="8", tip_text="DICA 2")
         self.containerTip3 = ContainerTip(tip_score="6", tip_text="DICA 3", margin=80)
+        
+        self.user_entry = ft.Ref[ft.TextField()]
 
         self.controls=[
             ft.Container(
@@ -76,6 +83,7 @@ class UI_GameSolo2(ft.Column):
                         self.containerTip3,
                         
                         ft.Container(
+                            ref=self.user_entry,
                             margin=ft.margin.only(top=30),
                             alignment=ft.alignment.center,
                             content=ft.TextField(
