@@ -8,7 +8,6 @@ class ConfigAppUI(ft.Column):
 
         self.expand = True
         self.alignment = ft.MainAxisAlignment.START
-        # self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         
         self.controls = [
             ft.Container(
@@ -26,30 +25,7 @@ class ConfigAppUI(ft.Column):
                 width=350,
                 height=300,
                 bgcolor=ft.colors.GREY,
-                content=ft.Column(
-                    controls=[
-                        ft.Container(
-                            margin=ft.margin.only(top=5),
-                            width=310,
-                            height=200,
-                            alignment=ft.alignment.center,
-                            bgcolor=ft.colors.BLUE,
-                            content=ft.Text("GRADE DE AVATARES"),
-                        ),
-                        
-                    ]
-                ),
             ),
-            
-            
-            
-            # ft.Container(
-            #     width=350,
-            #     height=200,
-            #     alignment=ft.alignment.center,
-            #     bgcolor=ft.colors.BLUE,
-            #     content=ft.Text("GRADE DE AVATARES"),
-            # ),
         ]
     
     def config_user(self, e):

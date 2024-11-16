@@ -1,5 +1,7 @@
 import flet as ft
 from time import sleep
+from gameSolo import GameSolo
+from app import Application
 
 
 class ContainerTip(ft.Container):
@@ -29,7 +31,7 @@ class ContainerTip(ft.Container):
         self.visible = False
 
 
-class UI_GameSolo2(ft.Column):
+class UI_GameSolo2(ft.Column, GameSolo):
     def __init__(self, page: ft.Page):
         super().__init__()
         self.page = page
@@ -43,10 +45,13 @@ class UI_GameSolo2(ft.Column):
         self.tip2 = "DICA 2"
         self.tip3 = "DICA 3"
         
-        self.containerTip1 = ContainerTip(tip_score="10", tip_text="DICA 1", margin=-80)
+        self.containerTip1 = ContainerTip(
+            tip_score="10", tip_text=self.tips_word[0].upper(), margin=-80)
         self.containerTip1.visible = True
-        self.containerTip2 = ContainerTip(tip_score="8", tip_text="DICA 2")
-        self.containerTip3 = ContainerTip(tip_score="6", tip_text="DICA 3", margin=80)
+        self.containerTip2 = ContainerTip(
+            tip_score="8", tip_text=self.tips_word[1].upper())
+        self.containerTip3 = ContainerTip(
+            tip_score="6", tip_text=self.tips_word[2].upper(), margin=80)
         
         self.user_entry = ft.Ref[ft.TextField()]
 
@@ -83,10 +88,10 @@ class UI_GameSolo2(ft.Column):
                         self.containerTip3,
                         
                         ft.Container(
-                            ref=self.user_entry,
                             margin=ft.margin.only(top=30),
                             alignment=ft.alignment.center,
                             content=ft.TextField(
+                                ref=self.user_entry,
                                 width=220,
                                 border_color="transparent",
                                 expand=True,
@@ -127,16 +132,41 @@ class UI_GameSolo2(ft.Column):
         ]
     
     def button_responder(self, e):
-        self.win_modal = ft.AlertDialog(
-            modal=True,
-            title=ft.Text("PARABÉNS, ACERTOU!"),
-            content=ft.Text("PALAVRA_X \nGanhou Y Pontos"),
-            actions=[
-                ft.TextButton("Menu", on_click=lambda e: self.page.close(self.win_modal)),
-                ft.TextButton("Próxima Palavra", on_click=self.button_nextWord),
-            ],
-        )
-        self.page.open(self.win_modal)
+        if self.user_entry.current.value.lower() == self.word_selected.lower():
+            if self.containerTip3.visible:
+                self.score_win = 6
+            elif self.containerTip2.visible:
+                self.score_win = 8
+            else:
+                self.score_win = 10
+        
+            self.win_modal = ft.AlertDialog(
+                alignment=ft.alignment.center,
+                modal=True,
+                title=ft.Text("PARABÉNS, ACERTOU!"),
+                content=ft.Text(f"{self.word_selected} \nganho {self.score_win}"),
+                actions=[
+                    ft.TextButton("Menu", 
+                                  on_click=lambda e: self.page.close(self.win_modal)),
+                    ft.TextButton("Próxima Palavra", key="win", 
+                                  on_click=self.button_nextWord),
+                ],
+            )
+            self.page.open(self.win_modal)
+        else:
+            self.lose_modal = ft.AlertDialog(
+                alignment=ft.alignment.center,
+                modal=True,
+                title=ft.Text("ERROU!"),
+                content=ft.Text(f"ERROU"),
+                actions=[
+                    ft.TextButton("Menu", 
+                                  on_click=lambda e: self.page.close(self.lose_modal)),
+                    ft.TextButton("Próxima Palavra", key="lose", 
+                                  on_click=self.button_nextWord),
+                ],
+            )
+            self.page.open(self.lose_modal)
     
     def button_nextTip(self, e):
         if self.containerTip2.visible:
@@ -146,4 +176,27 @@ class UI_GameSolo2(ft.Column):
         self.page.update()
     
     def button_nextWord(self, e):
-        self.page.close(self.win_modal)
+        if e.control.key == "win":
+            self.page.close(self.win_modal)
+        else:
+            self.page.close(self.lose_modal)
+        
+        sleep(1)
+        print("PRÓXIMA PALAVRA >>>")
+        
+        if not self.words:
+            print("SEM PALAVRAS")
+            end_modal = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("FIM DE JOGO!"),
+                content=ft.Text("Palavras zeradas..."),
+                actions=[
+                    ft.TextButton("Continuar", on_click=lambda _: self.page.close(end_modal)),
+                ],
+                on_dismiss=lambda _: self.page.add(Application(self.page).build()),
+            )
+            self.page.open(end_modal)
+        else:
+            self.page.clean()
+            self.page.add(UI_GameSolo2(self.page))
+            sleep(1)

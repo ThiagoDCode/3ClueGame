@@ -2,6 +2,7 @@ import flet as ft
 import os
 import sys
 import json
+from time import sleep
 
 
 with open("user_data.json", mode="r", encoding="UTF-8") as file:
@@ -29,7 +30,7 @@ class Application:
 
         # HEADER BAR --------------------------------------------------------------
         self.bar = ft.AppBar(
-            leading=ft.IconButton(ft.icons.HOME, tooltip="Tela Inicial", on_click=self.restart_app),
+            leading=ft.IconButton(ft.icons.HOME, tooltip="Tela Inicial", on_click=self.home),
             bgcolor=ft.colors.SURFACE_VARIANT,
             toolbar_height=35,
             actions=[
@@ -59,10 +60,9 @@ class Application:
             self.build(),
         )
     
-    # def home(self):
-    #     self.restart_app()
-    #     self.page.clean()
-    #     self.page.add(self.build())
+    def home(self, e):
+        self.page.clean()
+        self.page.add(self.build())
     
     def configs_app(self, e):
         from configs_app import ConfigAppUI
@@ -76,6 +76,8 @@ class Application:
         self.page.add(EditUser(self.page))
     
     def restart_app(self, e):
+        self.page.window.destroy()
+        sleep(0.5)
         python = sys.executable
         os.execl(python, python, *sys.argv)
     
@@ -98,14 +100,43 @@ class Application:
     #         self.page.clean()
     #         self.page.add(GameUI_Solo(self.page))
     
+    def button_NovoJogo(self, e):
+        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+            user_data = json.load(file)
+        
+        if user_data["words_win"] > 0:
+            self.alert_modal = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("Confirmar novo Jogo"),
+                content=ft.Text(
+                    "Isso reiniciará seu jogo, zerando sua pontuação. \n\nDeseja continuar?"),
+                actions=[
+                    ft.TextButton(text="Confirmar", on_click=self.new_game),
+                    ft.TextButton(text="Cancelar", 
+                                  on_click=lambda _: self.page.close(self.alert_modal)),
+                ]
+            )
+            self.page.open(self.alert_modal)
+        else:
+            self.new_game(e)
+    
     def new_game(self, e):
         from UI_gameSolo import UI_GameSolo2
+        from gameSolo import restart_game
         
+        if e.control.text == "Confirmar":
+            self.page.close(self.alert_modal)
+            sleep(0.5)
+        
+        restart_game()
         self.page.clean()
         self.page.add(UI_GameSolo2(self.page))
     
     # BUILD HOME -----------------------------------------------------------------------------------------
     def build(self):
+        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+            user_data = json.load(file)
+        
         main_container = ft.Container(
             width=360,
             height=640,
@@ -208,7 +239,7 @@ class Application:
                         content=ft.Column(
                             controls=[
                                 Buttons_Main(text="Continuar"),
-                                Buttons_Main(text="Novo Jogo", on_click=self.new_game),
+                                Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
                                 Buttons_Main(text="Duelo"),
                                 Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
                             ]

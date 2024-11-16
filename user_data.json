@@ -1,7 +1,7 @@
 {
-    "user": "Dallas",
+    "user": "Nicole2",
     "avatar": "link-img",
-    "words_win": "palavras-acertos",
-    "score": "score",
-    "record": "words_win-record"
+    "words_win": 0,
+    "score": 0,
+    "record": 0
 }

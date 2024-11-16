@@ -2,6 +2,10 @@ import flet as ft
 import json
 
 
+with open("user_data.json", mode="r", encoding="UTF-8") as file:
+    user_data = json.load(file)
+
+
 class EditUser(ft.Column):
     def __init__(self, page: ft.Page):
         super().__init__()
@@ -31,7 +35,7 @@ class EditUser(ft.Column):
                     width=220,
                     border_color="transparent",
                     expand=True,
-                    value="#User",
+                    value=user_data["user"],
                     color="black",
                     bgcolor="#B9BABB",
                 ),
@@ -58,9 +62,6 @@ class EditUser(ft.Column):
             )
             self.page.open(nick_alert)
         else:
-            with open("user_data.json", mode="r", encoding="UTF-8") as file:
-                user_data = json.load(file)
-
             user_data["user"] = self.user_nick_entry.current.value
 
             with open("user_data.json", mode="w", encoding="UTF-8") as save:
