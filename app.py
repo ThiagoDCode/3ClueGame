@@ -1,6 +1,12 @@
 import flet as ft
-from back_end import Game_Solo
-from back_end import words
+import os
+import sys
+import json
+from time import sleep
+
+
+with open("user_data.json", mode="r", encoding="UTF-8") as file:
+    user_data = json.load(file)
 
 
 class Buttons_Main(ft.ElevatedButton):
@@ -28,9 +34,9 @@ class Application:
             bgcolor=ft.colors.SURFACE_VARIANT,
             toolbar_height=35,
             actions=[
-                ft.PopupMenuButton(tooltip="Preferências",
+                ft.PopupMenuButton(tooltip="Configurações",
                     items=[
-                        ft.PopupMenuItem(text="ITEM 1"),
+                        ft.PopupMenuItem(text="Preferências", on_click=self.configs_app),
                         ft.PopupMenuItem(),
                         ft.PopupMenuItem(text="ITEM 2"),
                     ],
@@ -58,33 +64,79 @@ class Application:
         self.page.clean()
         self.page.add(self.build())
     
-    def continued(self, e):
-        from game_ui import GameUI_Solo
-        
-        if not words:
-            print("sem palavras")
-            endGame_modal = ft.AlertDialog(
-                modal=True,
-                title=ft.Text("Fim de Jogo"),
-                content=ft.Text("Palavras zeradas"),
-                actions=[
-                    ft.TextButton("Novo Jogo", on_click=lambda e: self.page.close(endGame_modal)),
-                    ft.TextButton("Continuar", on_click=lambda e: self.page.close(endGame_modal))
-                ]
-            )
-            self.page.open(endGame_modal)
-        else:
-            self.page.clean()
-            self.page.add(GameUI_Solo(self.page))
+    def configs_app(self, e):
+        from configs_app import ConfigAppUI
+        self.page.clean()
+        self.page.add(ConfigAppUI(self.page))
     
-    def new_game(self,e):
-        from game_ui import GameUI_Solo
+    def edit_user(self, e):
+        from UI_editUser import EditUser
         
         self.page.clean()
-        self.page.add(GameUI_Solo(self.page))
+        self.page.add(EditUser(self.page))
+    
+    def restart_app(self, e):
+        self.page.window.destroy()
+        sleep(0.5)
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
+    
+    # def continued(self, e):
+    #     from game_ui import GameUI_Solo
+        
+    #     if not words:
+    #         print("sem palavras")
+    #         endGame_modal = ft.AlertDialog(
+    #             modal=True,
+    #             title=ft.Text("Fim de Jogo"),
+    #             content=ft.Text("Palavras zeradas"),
+    #             actions=[
+    #                 ft.TextButton("Novo Jogo", on_click=lambda e: self.page.close(endGame_modal)),
+    #                 ft.TextButton("Continuar", on_click=lambda e: self.page.close(endGame_modal))
+    #             ]
+    #         )
+    #         self.page.open(endGame_modal)
+    #     else:
+    #         self.page.clean()
+    #         self.page.add(GameUI_Solo(self.page))
+    
+    def button_NovoJogo(self, e):
+        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+            user_data = json.load(file)
+        
+        if user_data["words_win"] > 0:
+            self.alert_modal = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("Confirmar novo Jogo"),
+                content=ft.Text(
+                    "Isso reiniciará seu jogo, zerando sua pontuação. \n\nDeseja continuar?"),
+                actions=[
+                    ft.TextButton(text="Confirmar", on_click=self.new_game),
+                    ft.TextButton(text="Cancelar", 
+                                  on_click=lambda _: self.page.close(self.alert_modal)),
+                ]
+            )
+            self.page.open(self.alert_modal)
+        else:
+            self.new_game(e)
+    
+    def new_game(self, e):
+        from UI_gameSolo import UI_GameSolo2
+        from gameSolo import restart_game
+        
+        if e.control.text == "Confirmar":
+            self.page.close(self.alert_modal)
+            sleep(0.5)
+        
+        restart_game()
+        self.page.clean()
+        self.page.add(UI_GameSolo2(self.page))
     
     # BUILD HOME -----------------------------------------------------------------------------------------
     def build(self):
+        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+            user_data = json.load(file)
+        
         main_container = ft.Container(
             width=360,
             height=640,
@@ -103,9 +155,11 @@ class Application:
                                          fit=ft.ImageFit.COVER,
                                          width=150,
                                         ),
+                        on_click=self.edit_user,
+                        tooltip="Editar Perfil"
                     ),
 
-                    ft.Text("#Dallas", weight="bold"),
+                    ft.Text(user_data["user"], weight="bold"),
 
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,
@@ -184,8 +238,8 @@ class Application:
                         margin=ft.margin.only(top=40),
                         content=ft.Column(
                             controls=[
-                                Buttons_Main(text="Continuar", on_click=self.continued),
-                                Buttons_Main(text="Novo Jogo", on_click=self.new_game),
+                                Buttons_Main(text="Continuar"),
+                                Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
                                 Buttons_Main(text="Duelo"),
                                 Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
                             ]
