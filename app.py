@@ -81,24 +81,26 @@ class Application:
         python = sys.executable
         os.execl(python, python, *sys.argv)
     
-    # def continued(self, e):
-    #     from game_ui import GameUI_Solo
+    def button_Continuar(self, e):
+        from UI_gameSolo import UI_GameSolo2
         
-    #     if not words:
-    #         print("sem palavras")
-    #         endGame_modal = ft.AlertDialog(
-    #             modal=True,
-    #             title=ft.Text("Fim de Jogo"),
-    #             content=ft.Text("Palavras zeradas"),
-    #             actions=[
-    #                 ft.TextButton("Novo Jogo", on_click=lambda e: self.page.close(endGame_modal)),
-    #                 ft.TextButton("Continuar", on_click=lambda e: self.page.close(endGame_modal))
-    #             ]
-    #         )
-    #         self.page.open(endGame_modal)
-    #     else:
-    #         self.page.clean()
-    #         self.page.add(GameUI_Solo(self.page))
+        with open("word_list_copy.json", mode="r", encoding="UTF-8") as file:
+            words = json.load(file)
+        if not words:
+            print("SEM PALAVRAS")
+            end_modal = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("FIM DE JOGO!"),
+                content=ft.Text("Palavras zeradas..."),
+                actions=[
+                    ft.TextButton(
+                        "Continuar", on_click=lambda _: self.page.close(end_modal)),
+                ],
+            )
+            self.page.open(end_modal)
+        else:
+            self.page.clean()
+            self.page.add(UI_GameSolo2(self.page))
     
     def button_NovoJogo(self, e):
         with open("user_data.json", mode="r", encoding="UTF-8") as file:
@@ -255,7 +257,7 @@ class Application:
                         margin=ft.margin.only(top=40),
                         content=ft.Column(
                             controls=[
-                                Buttons_Main(text="Continuar"),
+                                Buttons_Main(text="Continuar", on_click=self.button_Continuar),
                                 Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
                                 Buttons_Main(text="Duelo"),
                                 Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
