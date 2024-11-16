@@ -128,6 +128,23 @@ class Application:
             self.page.close(self.alert_modal)
             sleep(0.5)
         
+        self.page.overlay.append(
+            ft.Container(
+                alignment=ft.alignment.center,
+                width=360,
+                height=640,
+                content=ft.CupertinoActivityIndicator(
+                    radius=50, color=ft.colors.BLUE, animating=True
+                )
+            )
+        )
+        self.main_container.opacity = 0.30
+        self.page.update()
+        sleep(5)
+        self.page.overlay.clear()
+        self.main_container.opacity = 1
+        self.page.update()
+        
         restart_game()
         self.page.clean()
         self.page.add(UI_GameSolo2(self.page))
@@ -137,7 +154,7 @@ class Application:
         with open("user_data.json", mode="r", encoding="UTF-8") as file:
             user_data = json.load(file)
         
-        main_container = ft.Container(
+        self.main_container = ft.Container(
             width=360,
             height=640,
             margin=ft.margin.only(top=-10),
@@ -248,7 +265,7 @@ class Application:
                 ],
             ),
         )
-        return main_container
+        return self.main_container
     # ----------------------------------------------------------------------------------------------------
 
 
