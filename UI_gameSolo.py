@@ -134,25 +134,27 @@ class UI_GameSolo2(ft.Column, GameSolo):
     def button_responder(self, e):
         if self.user_entry.current.value.lower() == self.word_selected.lower():
             if self.containerTip3.visible:
-                self.score_win = 6
+                self.score = 6
             elif self.containerTip2.visible:
-                self.score_win = 8
+                self.score = 8
             else:
-                self.score_win = 10
+                self.score = 10
         
             self.win_modal = ft.AlertDialog(
                 alignment=ft.alignment.center,
                 modal=True,
                 title=ft.Text("PARABÉNS, ACERTOU!"),
-                content=ft.Text(f"{self.word_selected} \nganho {self.score_win}"),
+                content=ft.Text(f"{self.word_selected} \nganho {self.score}"),
                 actions=[
-                    ft.TextButton("Menu", 
-                                  on_click=lambda e: self.page.close(self.win_modal)),
+                    ft.TextButton("Menu", on_click=self.home, key="win"),
                     ft.TextButton("Próxima Palavra", key="win", 
                                   on_click=self.button_nextWord),
                 ],
             )
             self.page.open(self.win_modal)
+            
+            self.score_win(self.score)
+            
         else:
             self.lose_modal = ft.AlertDialog(
                 alignment=ft.alignment.center,
@@ -160,8 +162,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
                 title=ft.Text("ERROU!"),
                 content=ft.Text(f"ERROU"),
                 actions=[
-                    ft.TextButton("Menu", 
-                                  on_click=lambda e: self.page.close(self.lose_modal)),
+                    ft.TextButton("Menu", on_click=self.home, key="lose"),
                     ft.TextButton("Próxima Palavra", key="lose", 
                                   on_click=self.button_nextWord),
                 ],
@@ -200,3 +201,13 @@ class UI_GameSolo2(ft.Column, GameSolo):
             self.page.clean()
             self.page.add(UI_GameSolo2(self.page))
             sleep(1)
+    
+    def home(self, e):
+        if e.control.key == "win":
+            self.page.close(self.win_modal)
+        else:
+            self.page.close(self.lose_modal)
+        sleep(0.5)
+        
+        self.page.clean()
+        self.page.add(Application(self.page).build())

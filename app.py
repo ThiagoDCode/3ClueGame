@@ -51,7 +51,7 @@ class Application:
             title=ft.Text("Regras do Jogo"),
             content=ft.Text("Descubra a palavra secreta, usando até 03 dicas!"),
             actions=[
-                ft.TextButton("Continuar", on_click=lambda e: self.page.close(self.rules_modal)),
+                ft.TextButton("Entendi", on_click=lambda e: self.page.close(self.rules_modal)),
             ],
         )
         # --------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ class Application:
         )
         self.main_container.opacity = 0.30
         self.page.update()
-        sleep(5)
+        sleep(3)
         self.page.overlay.clear()
         self.main_container.opacity = 1
         self.page.update()
