@@ -1,7 +1,10 @@
 {
-    "user": "Nicole",
+    "user": "Nicole2",
     "avatar": "link-img",
     "words_win": 0,
     "score": 0,
-    "record": 0
+    "record": [
+        0,
+        0
+    ]
 }

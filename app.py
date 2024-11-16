@@ -200,15 +200,17 @@ class Application:
                                             content=ft.Image(
                                                 src="images/fire.png")
                                         ),
-                                        ft.Text("5", color=ft.colors.BLACK,size=20, weight="bold"),
-                                        ft.Text("Melhor Score", color=ft.colors.BLACK, size=10, weight="bold"),
+                                        ft.Text(user_data["record"][1], 
+                                                color=ft.colors.BLACK, size=20, weight="bold"),
+                                        ft.Text("Melhor Score", 
+                                                color=ft.colors.BLACK, size=10, weight="bold"),
                                     ],
                                 )
                             ),
 
                             ft.Container(
                                 width=95,
-                                height=100,
+                                height=115,
                                 bgcolor="white",
                                 border_radius=ft.border_radius.only(bottom_left=50, bottom_right=50),
                                 padding=-13,
@@ -222,9 +224,12 @@ class Application:
                                             alignment=ft.alignment.center,
                                             content=ft.Image(src="images/stars.png")
                                         ),
-                                        ft.Text("5", color=ft.colors.BLACK, size=20, weight="bold"),
-                                        ft.Text("   Palavras\nDescobertas", 
-                                                color=ft.colors.BLACK, size=10, weight="bold"),
+                                        ft.Text(
+                                            user_data["words_win"], 
+                                            color=ft.colors.BLACK, size=20, weight="bold"),
+                                        ft.Text(
+                                            "   Palavras\nDescobertas", 
+                                            color=ft.colors.BLACK, size=10, weight="bold"),
                                     ],
                                 )
                             ),
@@ -245,8 +250,12 @@ class Application:
                                             alignment=ft.alignment.center,
                                             content=ft.Image(src="images/coin.png")
                                         ),
-                                        ft.Text("5", color=ft.colors.BLACK, size=20, weight="bold"),
-                                        ft.Text("Pontuação", color=ft.colors.BLACK, size=10, weight="bold"),
+                                        ft.Text(
+                                            user_data["score"],
+                                            color=ft.colors.BLACK, size=20, weight="bold"),
+                                        ft.Text(
+                                            "Pontuação", 
+                                            color=ft.colors.BLACK, size=10, weight="bold"),
                                     ],
                                 )
                             ),

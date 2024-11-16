@@ -39,12 +39,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
         self.expand = True
         self.alignment = ft.MainAxisAlignment.END
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-        
-        # OU COLOCAR DIRETAMENTE NA LINA DOS CONTAINERS
-        self.tip1 = "DICA 1"
-        self.tip2 = "DICA 2"
-        self.tip3 = "DICA 3"
-        
+
         self.containerTip1 = ContainerTip(
             tip_score="10", tip_text=self.tips_word[0].upper(), margin=-80)
         self.containerTip1.visible = True
@@ -153,9 +148,9 @@ class UI_GameSolo2(ft.Column, GameSolo):
             )
             self.page.open(self.win_modal)
             
-            self.score_win(self.score)
-            
+            self.result_game(record=True, score_win=self.score)
         else:
+            self.result_game(record=False)
             self.lose_modal = ft.AlertDialog(
                 alignment=ft.alignment.center,
                 modal=True,
@@ -187,16 +182,15 @@ class UI_GameSolo2(ft.Column, GameSolo):
         
         if not self.words:
             print("SEM PALAVRAS")
-            end_modal = ft.AlertDialog(
+            self.end_modal = ft.AlertDialog(
                 modal=True,
                 title=ft.Text("FIM DE JOGO!"),
                 content=ft.Text("Palavras zeradas..."),
                 actions=[
-                    ft.TextButton("Continuar", on_click=lambda _: self.page.close(end_modal)),
+                    ft.TextButton("Continuar", on_click=self.home, key="end"),
                 ],
-                on_dismiss=lambda _: self.page.add(Application(self.page).build()),
             )
-            self.page.open(end_modal)
+            self.page.open(self.end_modal)
         else:
             self.page.clean()
             self.page.add(UI_GameSolo2(self.page))
@@ -205,9 +199,11 @@ class UI_GameSolo2(ft.Column, GameSolo):
     def home(self, e):
         if e.control.key == "win":
             self.page.close(self.win_modal)
-        else:
+        elif e.control.key == "lose":
             self.page.close(self.lose_modal)
+        else:
+            self.page.close(self.end_modal)
         sleep(0.5)
         
         self.page.clean()
-        self.page.add(Application(self.page).build())
+        Application(self.page).home(e)
