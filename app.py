@@ -87,14 +87,12 @@ class Application:
         with open("word_list_copy.json", mode="r", encoding="UTF-8") as file:
             words = json.load(file)
         if not words:
-            print("SEM PALAVRAS")
             end_modal = ft.AlertDialog(
                 modal=True,
                 title=ft.Text("FIM DE JOGO!"),
                 content=ft.Text("Palavras zeradas..."),
-                actions=[
-                    ft.TextButton(
-                        "Continuar", on_click=lambda _: self.page.close(end_modal)),
+                actions=[ft.TextButton(
+                    "Continuar", on_click=lambda _: self.page.close(end_modal)),
                 ],
             )
             self.page.open(end_modal)
@@ -106,7 +104,7 @@ class Application:
         with open("user_data.json", mode="r", encoding="UTF-8") as file:
             user_data = json.load(file)
         
-        if user_data["words_win"] > 0:
+        if user_data["words_played"][1] > 0:
             self.alert_modal = ft.AlertDialog(
                 modal=True,
                 title=ft.Text("Confirmar novo Jogo"),
@@ -155,6 +153,19 @@ class Application:
     def build(self):
         with open("user_data.json", mode="r", encoding="UTF-8") as file:
             user_data = json.load(file)
+        
+        self.btn_continuar = ft.ElevatedButton(
+            text="Continuar",
+            width=150,
+            color=ft.colors.WHITE70,
+            bgcolor=ft.colors.BLUE_900,
+            on_click=self.button_Continuar,
+            disabled=True,
+            opacity=0.3
+        )
+        if user_data["words_played"][0]:
+            self.btn_continuar.disabled = False
+            self.btn_continuar.opacity = 1
         
         self.main_container = ft.Container(
             width=360,
@@ -225,7 +236,7 @@ class Application:
                                             content=ft.Image(src="images/stars.png")
                                         ),
                                         ft.Text(
-                                            user_data["words_win"], 
+                                            user_data["words_played"][1],
                                             color=ft.colors.BLACK, size=20, weight="bold"),
                                         ft.Text(
                                             "   Palavras\nDescobertas", 
@@ -266,7 +277,7 @@ class Application:
                         margin=ft.margin.only(top=40),
                         content=ft.Column(
                             controls=[
-                                Buttons_Main(text="Continuar", on_click=self.button_Continuar),
+                                self.btn_continuar,
                                 Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
                                 Buttons_Main(text="Duelo"),
                                 Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),

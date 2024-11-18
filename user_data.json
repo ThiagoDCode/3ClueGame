@@ -1,10 +1,13 @@
 {
-    "user": "Nicole2",
+    "user": "Nicole",
     "avatar": "link-img",
-    "words_win": 0,
-    "score": 0,
+    "words_played": [
+        4,
+        3
+    ],
+    "score": 26,
     "record": [
-        0,
-        0
+        3,
+        3
     ]
 }

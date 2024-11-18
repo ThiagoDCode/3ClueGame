@@ -1,7 +1,12 @@
 import flet as ft
+import json
 from time import sleep
 from gameSolo import GameSolo
 from app import Application
+
+
+with open("user_data.json", mode="r", encoding="UTF-8") as file_score:
+    score_user = json.load(file_score)
 
 
 class ContainerTip(ft.Container):
@@ -49,7 +54,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
             tip_score="6", tip_text=self.tips_word[2].upper(), margin=80)
         
         self.user_entry = ft.Ref[ft.TextField()]
-
+        
         self.controls=[
             ft.Container(
                 width=350,
@@ -68,8 +73,9 @@ class UI_GameSolo2(ft.Column, GameSolo):
                             border_radius=ft.border_radius.all(15),
                             bgcolor=ft.colors.BLUE_GREY,
                             alignment=ft.alignment.center,
-                            content=ft.Text(value="PALAVRA 1/100",
-                                            size=20, weight="bold"),
+                            content=ft.Text(
+                                value=f"PALAVRA {self.total_words_played}/{self.total_words}",
+                                size=20, weight="bold"),
                         ),
                         
                         ft.Container(
