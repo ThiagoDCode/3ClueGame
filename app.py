@@ -12,8 +12,9 @@ with open("user_data.json", mode="r", encoding="UTF-8") as file:
 class Buttons_Main(ft.ElevatedButton):
     def __init__(self, text, on_click=""):
         super().__init__()
-        self.bgcolor = ft.colors.BLUE_900
-        self.color = ft.colors.WHITE70
+        self.bgcolor = ft.colors.BLUE_500
+        self.color = ft.colors.WHITE
+        self.style = ft.ButtonStyle(overlay_color="blue800")
         self.text = text
         self.width = 150
         self.on_click = on_click
@@ -55,7 +56,6 @@ class Application:
             ],
         )
         # --------------------------------------------------------------------------------------
-
         self.page.add(
             self.build(),
         )
@@ -157,11 +157,12 @@ class Application:
         self.btn_continuar = ft.ElevatedButton(
             text="Continuar",
             width=150,
-            color=ft.colors.WHITE70,
-            bgcolor=ft.colors.BLUE_900,
+            color=ft.colors.WHITE,
+            bgcolor=ft.colors.BLUE_500,
             on_click=self.button_Continuar,
             disabled=True,
-            opacity=0.3
+            opacity=0.6,
+            style=ft.ButtonStyle(overlay_color="blue800")
         )
         if user_data["words_played"][0]:
             self.btn_continuar.disabled = False
@@ -170,122 +171,172 @@ class Application:
         self.main_container = ft.Container(
             width=360,
             height=640,
-            margin=ft.margin.only(top=-10),
-            content=ft.Column(
-                horizontal_alignment="center",
-                controls=[
-                    ft.Text("Bem Vindo!", size=20, weight="bold"),
-                    ft.Container(
-                        width=100,
-                        height=100,
-                        border_radius=ft.border_radius.all(100),
-                        bgcolor="white",
-                        alignment=ft.alignment.center,
-                        content=ft.Image(src="images/avatar.png",
-                                         fit=ft.ImageFit.COVER,
-                                         width=150,
-                                        ),
-                        on_click=self.edit_user,
-                        tooltip="Editar Perfil"
-                    ),
-
-                    ft.Text(user_data["user"], weight="bold"),
-
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.CENTER,
+            margin=ft.margin.only(top=-10, left=-10, right=-10),
+            content=ft.Stack([
+                ft.Image(
+                    src="images/fundo_letras2.jpg",
+                    fit=ft.ImageFit.COVER,
+                    height=570,
+                    opacity=0.2
+                ),
+                ft.Container(
+                    width=360,
+                    height=640,
+                    margin=ft.margin.only(top=25),
+                    content=ft.Column(
+                        horizontal_alignment="center",
                         controls=[
                             ft.Container(
-                                width=95,
+                                margin=ft.margin.only(top=-20),
+                                width=250,
+                                height=35,
+                                bgcolor="grey",
+                                alignment=ft.alignment.center,
+                                border_radius=ft.border_radius.all(20),
+                                border=ft.border.only(bottom=ft.border.BorderSide(3)),
+                                image_src="images/logo.png"
+                            ), 
+                            
+                            ft.Text("Bem Vindo!", size=20, weight="bold"),
+                            ft.Container(
+                                width=100,
                                 height=100,
+                                border_radius=ft.border_radius.all(100),
                                 bgcolor="white",
-                                border_radius=ft.border_radius.only(bottom_left=50, bottom_right=50),
-                                padding=5,
-                                content=ft.Column(
-                                    horizontal_alignment="center",
-                                    spacing=0,
-                                    controls=[
-                                        ft.Container(
-                                            width=30,
-                                            height=30,
-                                            alignment=ft.alignment.center,
-                                            content=ft.Image(
-                                                src="images/fire.png")
+                                alignment=ft.alignment.center,
+                                content=ft.Image(src="images/avatar.png",
+                                                 fit=ft.ImageFit.COVER,
+                                                 width=150,
+                                                ),
+                                on_click=self.edit_user,
+                                tooltip="Editar Perfil"
+                            ),
+                            ft.Text(user_data["user"], 
+                                    font_family="DaddyTimeMono Nerd Font",
+                                    size=16, weight="bold"),
+
+                            ft.Row(
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                controls=[
+                                    ft.Container(
+                                        width=95,
+                                        height=100,
+                                        bgcolor="white",
+                                        border=ft.border.all(1, "BLUE"),
+                                        border_radius=ft.border_radius.only(
+                                            top_left=5, top_right=5,
+                                            bottom_left=50, bottom_right=50),
+                                        gradient=ft.PaintLinearGradient(
+                                            begin=ft.alignment.top_center,
+                                            end=ft.alignment.bottom_center,
+                                            colors=[ft.colors.BLUE, ft.colors.BLUE_900],
                                         ),
-                                        ft.Text(user_data["record"][1], 
-                                                color=ft.colors.BLACK, size=20, weight="bold"),
-                                        ft.Text("Melhor Score", 
-                                                color=ft.colors.BLACK, size=10, weight="bold"),
-                                    ],
-                                )
+                                        padding=5,
+                                        content=ft.Column(
+                                            horizontal_alignment="center",
+                                            spacing=0,
+                                            controls=[
+                                                ft.Container(
+                                                    width=30,
+                                                    height=30,
+                                                    alignment=ft.alignment.center,
+                                                    content=ft.Image(
+                                                        src="images/fire.png")
+                                                ),
+                                                ft.Text(user_data["record"][1],
+                                                        color=ft.colors.BLACK, size=20, weight="bold"),
+                                                ft.Text("Melhor Score",
+                                                        color=ft.colors.BLACK, size=10, weight="bold"),
+                                            ],
+                                        )
+                                    ),
+
+                                    ft.Container(
+                                        width=95,
+                                        height=115,
+                                        bgcolor="white",
+                                        border=ft.border.all(1, "PURPLE"),
+                                        border_radius=ft.border_radius.only(
+                                            top_left=5, top_right=5,
+                                            bottom_left=50, bottom_right=50),
+                                        padding=-13,
+                                        gradient=ft.PaintLinearGradient(
+                                            begin=ft.alignment.top_center,
+                                            end=ft.alignment.bottom_center,
+                                            colors=[ft.colors.PURPLE, ft.colors.PINK_900],
+                                        ),
+                                        content=ft.Column(
+                                            horizontal_alignment="center",
+                                            spacing=0,
+                                            controls=[
+                                                ft.Container(
+                                                    width=50,
+                                                    height=50,
+                                                    alignment=ft.alignment.center,
+                                                    content=ft.Image(
+                                                        src="images/stars.png")
+                                                ),
+                                                ft.Text(
+                                                    user_data["words_played"][1],
+                                                    color=ft.colors.BLACK, size=20, weight="bold"),
+                                                ft.Text(
+                                                    "   Palavras\nDescobertas",
+                                                    color=ft.colors.BLACK, size=10, weight="bold"),
+                                            ],
+                                        )
+                                    ),
+
+                                    ft.Container(
+                                        width=95,
+                                        height=100,
+                                        bgcolor="white",
+                                        border=ft.border.all(1, "YELLOW"),
+                                        border_radius=ft.border_radius.only(
+                                            top_left=5, top_right=5,
+                                            bottom_left=50, bottom_right=50),
+                                        padding=5,
+                                        gradient=ft.PaintLinearGradient(
+                                            begin=ft.alignment.top_center,
+                                            end=ft.alignment.bottom_center,
+                                            colors=[ft.colors.YELLOW, ft.colors.GREEN_500],
+                                        ),
+                                        content=ft.Column(
+                                            horizontal_alignment="center",
+                                            spacing=0,
+                                            controls=[
+                                                ft.Container(
+                                                    width=30,
+                                                    height=30,
+                                                    alignment=ft.alignment.center,
+                                                    content=ft.Image(
+                                                        src="images/coin.png")
+                                                ),
+                                                ft.Text(user_data["score"],
+                                                    color=ft.colors.BLACK, size=20, weight="bold"),
+                                                ft.Text("Pontuação",
+                                                    color=ft.colors.BLACK, size=10, weight="bold"),
+                                            ],
+                                        )
+                                    ),
+                                ],
                             ),
 
                             ft.Container(
-                                width=95,
-                                height=115,
-                                bgcolor="white",
-                                border_radius=ft.border_radius.only(bottom_left=50, bottom_right=50),
-                                padding=-13,
+                                margin=ft.margin.only(top=20),
                                 content=ft.Column(
-                                    horizontal_alignment="center",
-                                    spacing=0,
                                     controls=[
-                                        ft.Container(
-                                            width=50,
-                                            height=50,
-                                            alignment=ft.alignment.center,
-                                            content=ft.Image(src="images/stars.png")
-                                        ),
-                                        ft.Text(
-                                            user_data["words_played"][1],
-                                            color=ft.colors.BLACK, size=20, weight="bold"),
-                                        ft.Text(
-                                            "   Palavras\nDescobertas", 
-                                            color=ft.colors.BLACK, size=10, weight="bold"),
-                                    ],
-                                )
-                            ),
-
-                            ft.Container(
-                                width=95,
-                                height=100,
-                                bgcolor="white",
-                                border_radius=ft.border_radius.only(bottom_left=50, bottom_right=50),
-                                padding=5,
-                                content=ft.Column(
-                                    horizontal_alignment="center",
-                                    spacing=0,
-                                    controls=[
-                                        ft.Container(
-                                            width=30,
-                                            height=30,
-                                            alignment=ft.alignment.center,
-                                            content=ft.Image(src="images/coin.png")
-                                        ),
-                                        ft.Text(
-                                            user_data["score"],
-                                            color=ft.colors.BLACK, size=20, weight="bold"),
-                                        ft.Text(
-                                            "Pontuação", 
-                                            color=ft.colors.BLACK, size=10, weight="bold"),
-                                    ],
-                                )
+                                        self.btn_continuar,
+                                        Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
+                                        Buttons_Main(text="Duelo"),
+                                        Buttons_Main(text="Regras", 
+                                                     on_click=lambda e: self.page.open(self.rules_modal)),
+                                    ]
+                                ),
                             ),
                         ],
                     ),
-
-                    ft.Container(
-                        margin=ft.margin.only(top=40),
-                        content=ft.Column(
-                            controls=[
-                                self.btn_continuar,
-                                Buttons_Main(text="Novo Jogo", on_click=self.button_NovoJogo),
-                                Buttons_Main(text="Duelo"),
-                                Buttons_Main(text="Regras", on_click=lambda e: self.page.open(self.rules_modal)),
-                            ]
-                        ),
-                    ),
-                ],
-            ),
+                )
+            ]),
         )
         return self.main_container
     # ----------------------------------------------------------------------------------------------------
