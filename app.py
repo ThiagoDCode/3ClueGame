@@ -49,13 +49,25 @@ class Application:
         # MODAL REGRAS -------------------------------------------------------------------------
         self.rules_modal = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Regras do Jogo"),
-            content=ft.Text("Descubra a palavra secreta, usando até 03 dicas!"),
+            alignment=ft.alignment.center,
+            title=ft.Text("Regras do Jogo", font_family="Lilita One",
+                          text_align=ft.TextAlign.CENTER),
+            content=ft.Column(
+                width=200,
+                height=100,
+                controls=[
+                    ft.Divider(height=1, color="white"),
+                    ft.Text("DESCUBRA A PALAVRA SECRETA, USANDO ATÉ 03 DICAS!",
+                            font_family="Bauhaus 93", size=16,
+                            text_align=ft.TextAlign.CENTER),
+                ]
+            ),
             actions=[
                 ft.TextButton("Entendi", on_click=lambda e: self.page.close(self.rules_modal)),
             ],
         )
         # --------------------------------------------------------------------------------------
+        
         self.page.add(
             self.build(),
         )
@@ -107,9 +119,11 @@ class Application:
         if user_data["words_played"][1] > 0:
             self.alert_modal = ft.AlertDialog(
                 modal=True,
-                title=ft.Text("Confirmar novo Jogo"),
+                title=ft.Text("Novo Jogo", font_family="Lilita One",
+                              text_align=ft.TextAlign.CENTER),
                 content=ft.Text(
-                    "Isso reiniciará seu jogo, zerando sua pontuação. \n\nDeseja continuar?"),
+                    "Isso reiniciará seu jogo, zerando sua pontuação. \n\nDeseja continuar?",
+                    font_family="Baskerville Old Face", size=18),
                 actions=[
                     ft.TextButton(text="Confirmar", on_click=self.new_game),
                     ft.TextButton(text="Cancelar", 
@@ -190,7 +204,6 @@ class Application:
                                 margin=ft.margin.only(top=-20),
                                 width=250,
                                 height=35,
-                                bgcolor="grey",
                                 alignment=ft.alignment.center,
                                 border_radius=ft.border_radius.all(20),
                                 border=ft.border.only(bottom=ft.border.BorderSide(3)),
