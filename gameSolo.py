@@ -22,7 +22,7 @@ def restart_game():
     # RESET PONTUAÇÃO USUÁRIO
     with open("user_data.json", mode="r", encoding="UTF-8") as file_score:
         score = json.load(file_score)
-    score["words_played"] = [1, 0]
+    score["words_played"] = [len(words), 1, 0]
     score["score"] = 0
     score["record"] = [0, 0]
     
@@ -32,11 +32,12 @@ def restart_game():
 
 class GameSolo:
     def __init__(self):
-        self.total_words = len(words)
+        # self.total_words = len(words)
         
         with open("user_data.json", mode="r", encoding="UTF-8") as file_score:
             score_user = json.load(file_score)
-        self.total_words_played = score_user["words_played"][0]
+        self.total_words_played = score_user["words_played"][1]
+        self.total_words = score_user["words_played"][0]
         
         with open("word_list_copy.json", mode="r", encoding="UTF-8") as file:
             self.words = json.load(file)
@@ -57,13 +58,13 @@ class GameSolo:
             score_user = json.load(file_score)
         
         if record and score_win:
-            score_user["words_played"][1] += 1   # contador de palavras descobertas
+            score_user["words_played"][2] += 1   # contador de palavras descobertas
             score_user["score"] += score_win
             score_user["record"][0] += 1         # contador de palavras descobertas sequencialmente
         else:
             score_user["record"][0] = 0
         
-        score_user["words_played"][0] += 1   # contador de palavras jogadas
+        score_user["words_played"][1] += 1   # contador de palavras jogadas
         score_user["record"][1] = max(score_user["record"])   # salva o record máximo de palavras descobertas
 
         with open("user_data.json", mode="w", encoding="UTF-8") as save_score:

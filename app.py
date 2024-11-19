@@ -178,7 +178,7 @@ class Application:
             opacity=0.6,
             style=ft.ButtonStyle(overlay_color="blue800")
         )
-        if user_data["words_played"][0]:
+        if user_data["words_played"][1]:
             self.btn_continuar.disabled = False
             self.btn_continuar.opacity = 1
         
@@ -290,7 +290,7 @@ class Application:
                                                         src="images/stars.png")
                                                 ),
                                                 ft.Text(
-                                                    user_data["words_played"][1],
+                                                    user_data["words_played"][2],
                                                     color=ft.colors.BLACK, size=20, weight="bold"),
                                                 ft.Text(
                                                     "   Palavras\nDescobertas",
