@@ -217,7 +217,7 @@ class Application:
                                 border_radius=ft.border_radius.all(100),
                                 bgcolor="white",
                                 alignment=ft.alignment.center,
-                                content=ft.Image(src="images/avatar.png",
+                                content=ft.Image(src=user_data["avatar"],
                                                  fit=ft.ImageFit.COVER,
                                                  width=150,
                                                 ),
