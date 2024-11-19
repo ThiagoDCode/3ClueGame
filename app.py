@@ -25,6 +25,7 @@ class Application:
         self.page = page
         
         self.page.title = "3 Clue Game"
+        self.page.theme_mode = ft.ThemeMode.DARK
         self.page.window.width = 360
         self.page.window.height = 640
         self.page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -37,9 +38,9 @@ class Application:
             actions=[
                 ft.PopupMenuButton(tooltip="Configurações",
                     items=[
-                        ft.PopupMenuItem(text="Preferências", on_click=self.configs_app),
+                        ft.PopupMenuItem(text="Preferências"),
                         ft.PopupMenuItem(),
-                        ft.PopupMenuItem(text="ITEM 2"),
+                        ft.PopupMenuItem(text="Sair"),
                     ],
                 ),
             ],
@@ -75,11 +76,6 @@ class Application:
     def home(self, e):
         self.page.clean()
         self.page.add(self.build())
-    
-    def configs_app(self, e):
-        from configs_app import ConfigAppUI
-        self.page.clean()
-        self.page.add(ConfigAppUI(self.page))
     
     def edit_user(self, e):
         from UI_editUser import EditUser

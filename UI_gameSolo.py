@@ -112,7 +112,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
                             controls=[
                                 ft.ElevatedButton(text="Responder",
                                                   width=135, on_click=self.button_responder),
-                                ft.ElevatedButton(text="Próxima dica",
+                                ft.ElevatedButton(text="Próxima Dica",
                                                   width=135, on_click=self.button_nextTip),
                             ],
                         ),
@@ -128,7 +128,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
                 border_radius=ft.border_radius.all(100),
                 bgcolor="white",
                 alignment=ft.alignment.center,
-                content=ft.Image(src="images/avatar.png",
+                content=ft.Image(src=score_user["avatar"],
                                  fit=ft.ImageFit.COVER,
                                  width=150,
                                  ),

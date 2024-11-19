@@ -32,7 +32,6 @@ def restart_game():
 
 class GameSolo:
     def __init__(self):
-        # self.total_words = len(words)
         
         with open("user_data.json", mode="r", encoding="UTF-8") as file_score:
             score_user = json.load(file_score)
