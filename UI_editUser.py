@@ -17,13 +17,44 @@ class EditUser(ft.Column):
         
         self.user_nick_entry = ft.Ref[ft.TextField()]
         
+        img_avatares = [
+            "images/avatar.png",
+            "images/avatar1.png",
+            "images/avatar2.png",
+            "images/avatar3.png",
+            "images/avatar4.png",
+            "images/avatar5.png",
+        ]
+        
+        self.grid_avatares = ft.GridView(
+            expand=True,
+            max_extent=110,
+            child_aspect_ratio=1,
+            spacing=2,
+            run_spacing=2,
+        )
+        for img in img_avatares:
+            self.grid_avatares.controls.append(
+                ft.Container(
+                    alignment=ft.alignment.center,
+                    bgcolor=ft.colors.AMBER_100,
+                    border=ft.border.all(3, color="black"),
+                    image_src=img,
+                    on_click=self.avatar_selected,
+                    opacity=0.6,
+                    key=img
+                ),
+            )
+        
         self.controls = [
+            ft.Text("Perfil", font_family="Lilita One", size=20),
             ft.Container(
                 width=350,
-                height=200,
+                height=215,
+                padding=1,
                 alignment=ft.alignment.center,
                 bgcolor=ft.colors.BLUE,
-                content=ft.Text("GRADE DE AVATARES"),
+                content=self.grid_avatares
             ),
             
             ft.Text("Nick-Name", size=16, weight="bold"),
@@ -63,7 +94,7 @@ class EditUser(ft.Column):
             self.page.open(nick_alert)
         else:
             user_data["user"] = self.user_nick_entry.current.value
-
+            
             with open("user_data.json", mode="w", encoding="UTF-8") as save:
                 save.write(json.dumps(user_data, ensure_ascii=False, indent=4))
             
@@ -81,3 +112,15 @@ class EditUser(ft.Column):
                 ),
             )
             self.page.open(nick_alert)
+    
+    def avatar_selected(self, e):
+
+        for avatar in self.grid_avatares.controls:
+            avatar.opacity = 0.6
+            avatar.border = ft.border.all(3, color="black")
+        
+        e.control.opacity = 1
+        e.control.border = ft.border.all(3, color="YELLOW")
+        self.avatar_link = user_data["avatar"] = e.control.key
+        
+        self.page.update()

@@ -1,7 +1,8 @@
 {
-    "user": "Nicole",
-    "avatar": "link-img",
+    "user": "#User",
+    "avatar": "images/avatar.png",
     "words_played": [
+        0,
         0,
         0
     ],
