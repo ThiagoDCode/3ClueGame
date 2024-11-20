@@ -64,7 +64,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
                 width=350,
                 height=470,
                 border_radius=ft.border_radius.all(10),
-                bgcolor="#272B30",
+                bgcolor=ft.colors.with_opacity(0.9, ft.colors.PURPLE_900),
                 margin=ft.margin.only(top=70),
                 padding=ft.padding.only(top=70),
                 
@@ -93,7 +93,7 @@ class UI_GameSolo2(ft.Column, GameSolo):
                         self.containerTip3,
                         
                         ft.Container(
-                            margin=ft.margin.only(top=30),
+                            margin=ft.margin.only(top=30, bottom=20),
                             alignment=ft.alignment.center,
                             content=ft.TextField(
                                 ref=self.user_entry,
@@ -237,14 +237,15 @@ class UI_GameSolo2(ft.Column, GameSolo):
             self.page.close(self.lose_modal)
         
         sleep(1)
-        print("PRÓXIMA PALAVRA >>>")
         
         if not self.words:
-            print("SEM PALAVRAS")
             self.end_modal = ft.AlertDialog(
                 modal=True,
-                title=ft.Text("FIM DE JOGO!"),
-                content=ft.Text("Palavras zeradas..."),
+                title=ft.Text("FIM DE JOGO!", font_family="Lilita One",
+                              text_align=ft.TextAlign.CENTER),
+                content=ft.Text("Parabéns, você jogou todas as palavras!",
+                                text_align=ft.TextAlign.CENTER,
+                                font_family="Baskerville Old Face", size=18),
                 actions=[
                     ft.TextButton("Continuar", on_click=self.home, key="end"),
                 ],

@@ -7,8 +7,6 @@ words = {}
 def restart_game():
     global words
     
-    print("CHAMOU NEW_GAME")
-    
     # RESET LISTA DE PALAVRAS
     with open("word_list.json", mode="r", encoding="UTF-8") as file_list:
         words = json.load(file_list)
@@ -44,11 +42,6 @@ class GameSolo:
         self.word_selected, self.tips_word = choice(list(self.words.items()))
         self.words.pop(self.word_selected)
         
-        print("CHAMOU GAME-SOLO")
-        print(self.total_words)
-        print(self.word_selected)
-        print(self.tips_word)
-
     def result_game(self, record=True, score_win=0):
         with open("word_list_copy.json", mode="w", encoding="UTF-8") as save:
             save.write(json.dumps(self.words, ensure_ascii=False, indent=4))
@@ -65,6 +58,6 @@ class GameSolo:
         
         score_user["words_played"][1] += 1   # contador de palavras jogadas
         score_user["record"][1] = max(score_user["record"])   # salva o record máximo de palavras descobertas
-
+        
         with open("user_data.json", mode="w", encoding="UTF-8") as save_score:
             save_score.write(json.dumps(score_user, ensure_ascii=False, indent=4))

@@ -1,7 +1,8 @@
 {
     "user": "#User",
-    "avatar": "link-img",
+    "avatar": "images/avatar.png",
     "words_played": [
+        0,
         0,
         0
     ],

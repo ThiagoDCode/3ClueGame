@@ -29,11 +29,20 @@ class Application:
         self.page.window.width = 360
         self.page.window.height = 640
         self.page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+        
+        self.page.bgcolor = ft.colors.TRANSPARENT
+        self.page.decoration = ft.BoxDecoration(
+            image=ft.DecorationImage(
+                src="images/fundoApp.jpg",
+                fit=ft.ImageFit.COVER,
+                opacity=0.4,
+            ),
+        )
 
         # HEADER BAR --------------------------------------------------------------
         self.bar = ft.AppBar(
             leading=ft.IconButton(ft.icons.HOME, tooltip="Tela Inicial", on_click=self.home),
-            bgcolor=ft.colors.SURFACE_VARIANT,
+            bgcolor=ft.colors.TRANSPARENT,
             toolbar_height=35,
             actions=[
                 ft.PopupMenuButton(tooltip="Configurações",
@@ -97,8 +106,11 @@ class Application:
         if not words:
             end_modal = ft.AlertDialog(
                 modal=True,
-                title=ft.Text("FIM DE JOGO!"),
-                content=ft.Text("Palavras zeradas..."),
+                title=ft.Text("FIM DE JOGO!", font_family="Lilita One",
+                              text_align=ft.TextAlign.CENTER),
+                content=ft.Text("Parabéns, você jogou todas as palavras!",
+                                text_align=ft.TextAlign.CENTER,
+                                font_family="Baskerville Old Face", size=18),
                 actions=[ft.TextButton(
                     "Continuar", on_click=lambda _: self.page.close(end_modal)),
                 ],
@@ -183,12 +195,6 @@ class Application:
             height=640,
             margin=ft.margin.only(top=-10, left=-10, right=-10),
             content=ft.Stack([
-                ft.Image(
-                    src="images/fundo_letras2.jpg",
-                    fit=ft.ImageFit.COVER,
-                    height=570,
-                    opacity=0.2
-                ),
                 ft.Container(
                     width=360,
                     height=640,
