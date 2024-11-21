@@ -1,4 +1,6 @@
 # Jogo das 3 Pistas
+[![ThiagoDCode - 3ClueGame](https://img.shields.io/static/v1?label=ThiagoDCode&message=3ClueGame&color=blue&logo=github)](https://github.com/ThiagoDCode/3ClueGame "Ir para o repositório.")
+
 Aplicativo de estudo da biblioteca Flet em Python. Baseado no clássico jogo das 3 pistas. 
 
 <div align="center">
