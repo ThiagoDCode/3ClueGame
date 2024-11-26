@@ -1,8 +1,10 @@
 import flet as ft
 import json
+import os
 
+dir_app = os.path.dirname(__file__)
 
-with open("user_data.json", mode="r", encoding="UTF-8") as file:
+with open(dir_app + "/user_data.json", mode="r", encoding="UTF-8") as file:
     user_data = json.load(file)
 
 
@@ -95,7 +97,7 @@ class EditUser(ft.Column):
         else:
             user_data["user"] = self.user_nick_entry.current.value
             
-            with open("user_data.json", mode="w", encoding="UTF-8") as save:
+            with open(dir_app + "/user_data.json", mode="w", encoding="UTF-8") as save:
                 save.write(json.dumps(user_data, ensure_ascii=False, indent=4))
             
             nick_alert = ft.BottomSheet(

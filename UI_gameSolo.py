@@ -1,11 +1,13 @@
 import flet as ft
 import json
+import os
 from time import sleep
 from gameSolo import GameSolo
 from app import Application
 
+dir_app = os.path.dirname(__file__)
 
-with open("user_data.json", mode="r", encoding="UTF-8") as file_score:
+with open(dir_app + "/user_data.json", mode="r", encoding="UTF-8") as file_score:
     score_user = json.load(file_score)
 
 

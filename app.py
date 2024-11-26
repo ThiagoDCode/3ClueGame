@@ -4,8 +4,9 @@ import sys
 import json
 from time import sleep
 
+dir_app = os.path.dirname(__file__)
 
-with open("user_data.json", mode="r", encoding="UTF-8") as file:
+with open(dir_app + "/user_data.json", mode="r", encoding="UTF-8") as file:
     user_data = json.load(file)
 
 
@@ -101,8 +102,9 @@ class Application:
     def button_Continuar(self, e):
         from UI_gameSolo import UI_GameSolo2
         
-        with open("word_list_copy.json", mode="r", encoding="UTF-8") as file:
+        with open(dir_app + "/word_list_copy.json", mode="r", encoding="UTF-8") as file:
             words = json.load(file)
+        
         if not words:
             end_modal = ft.AlertDialog(
                 modal=True,
@@ -121,7 +123,7 @@ class Application:
             self.page.add(UI_GameSolo2(self.page))
     
     def button_NovoJogo(self, e):
-        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+        with open(dir_app + "/user_data.json", mode="r", encoding="UTF-8") as file:
             user_data = json.load(file)
         
         if user_data["words_played"][1] > 0:
@@ -173,7 +175,7 @@ class Application:
     
     # BUILD HOME -----------------------------------------------------------------------------------------
     def build(self):
-        with open("user_data.json", mode="r", encoding="UTF-8") as file:
+        with open(dir_app + "/user_data.json", mode="r", encoding="UTF-8") as file:
             user_data = json.load(file)
         
         self.btn_continuar = ft.ElevatedButton(
@@ -358,4 +360,4 @@ class Application:
 
 
 if __name__ == "__main__":
-    ft.app(target=Application, assets_dir="Assets")
+    ft.app(target=Application, assets_dir="_internal/Assets")
